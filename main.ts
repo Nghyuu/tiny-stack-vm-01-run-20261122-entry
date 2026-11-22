@@ -1,6 +1,6 @@
 // Tiny stack VM for make.fun tiny-stack-vm-01 (ISA v1): runs every
 // /input/<id>/program.bin and writes /output/<id>/stdout.bin + exit.txt.
-import{mkdirSync as k,readdirSync as d,readFileSync as f,writeFileSync as w}from"node:fs";
+import{mkdirSync as k,readdirSync as d,readFileSync as f,writeFileSync as w,statSync as u}from"node:fs";
 import{join as j}from"node:path";
 const T={0:[0,0,0],1:[1,0,1],2:[4,0,1],3:[0,1,0],4:[0,1,2],5:[0,2,2],6:[0,2,3],7:[0,3,3],16:[0,2,1],17:[0,2,1],18:[0,2,1],19:[0,2,1],20:[0,2,1],21:[0,2,1],22:[0,2,1],23:[0,1,1],24:[0,2,1],25:[0,2,1],26:[0,2,1],27:[0,1,1],28:[0,2,1],29:[0,2,1],30:[0,2,1],32:[0,2,1],33:[0,2,1],34:[0,2,1],48:[2,0,0],49:[2,1,0],50:[2,1,0],51:[2,0,0],52:[0,0,0],64:[0,1,1],65:[0,2,0],80:[0,1,0],81:[0,1,0],82:[0,0,1],83:[0,1,0]};
 function r(p,q){
@@ -58,6 +58,7 @@ function r(p,q){
 }
 const I=process.env.MAKEFUN_INPUT_DIR??"/input",O=process.env.MAKEFUN_OUTPUT_DIR??"/output";
 for(const id of d(I).sort()){
+ if(!u(j(I,id)).isDirectory())continue;
  const z=r(f(j(I,id,"program.bin")),f(j(I,id,"input.bin")));
  k(j(O,id),{recursive:true});
  w(j(O,id,"stdout.bin"),z.o);
